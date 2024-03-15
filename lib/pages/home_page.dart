@@ -24,18 +24,6 @@ class HomePage extends StatelessWidget {
                 SizedBox(
                   height: height * 0.08,
                 ),
-                // TextField(
-                //   decoration: InputDecoration(
-                //     hintText: 'Search Services',
-                //     hintStyle: TextStyle(
-                //       color: Colors.grey,
-                //       fontWeight: FontWeight.bold,
-                //     ),
-                //     border: InputBorder.none,
-                //     filled: true,
-                //     fillColor: Color(0xffCFCFCF),
-                //   ),
-                // ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -80,83 +68,6 @@ class HomePage extends StatelessWidget {
                 SizedBox(
                   height: 20,
                 ),
-                // Row(
-                //   children: [
-                //     const Text(
-                //       'Special for you',
-                //       style: TextStyle(
-                //         color: Color(
-                //           0xffEC8000,
-                //         ),
-                //       ),
-                //     ),
-                //     Spacer(),
-                //     Container(
-                //       height: 15,
-                //       width: 15,
-                //       decoration: BoxDecoration(
-                //         border: Border.all(
-                //           color: const Color(
-                //             0xffEC8000,
-                //           ),
-                //         ),
-                //       ),
-                //       child: const Center(
-                //         child: Icon(
-                //           Icons.navigate_next,
-                //           size: 15,
-                //           color: Color(
-                //             0xffEC8000,
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(
-                //   height: 20,
-                // ),
-                // Row(
-                //   children: [
-                //     Container(
-                //       decoration: BoxDecoration(
-                //         color: Colors.black,
-                //         borderRadius: BorderRadius.circular(10),
-                //       ),
-                //       height: 70,
-                //       width: 180,
-                //       child: Container(
-                //         margin: const EdgeInsets.only(left: 10, top: 20),
-                //         child: const Text(
-                //           'Tech Meetup\ncoming soon',
-                //           style: TextStyle(
-                //             color: Colors.white,
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //     const SizedBox(
-                //       width: 20,
-                //     ),
-                //     Container(
-                //       decoration: BoxDecoration(
-                //         color: Color(0xffEC8000),
-                //         borderRadius: BorderRadius.circular(10),
-                //       ),
-                //       height: 70,
-                //       // width: 180,
-                //       child: Container(
-                //         margin: const EdgeInsets.only(left: 10, top: 20),
-                //         child: const Text(
-                //           'Tech Meetup\ncoming soon',
-                //           style: TextStyle(
-                //             color: Colors.white,
-                //           ),
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
                 SizedBox(
                   height: 20,
                 ),

@@ -1,11 +1,9 @@
-import 'package:ascolin/pages/forgot_password_page.dart';
 import 'package:ascolin/pages/sign_up_page.dart';
 import 'package:ascolin/utils/reusable_signup_container.dart';
 import 'package:ascolin/view_model/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../utils/reusable_text.dart';
 import '../widgets/email_text_field.dart';
 import '../widgets/password_field.dart';
 
@@ -22,6 +20,8 @@ class _SignInPageState extends State<SignInPage> {
 
   bool _visibilitySecure = false;
   bool _isChecked = false;
+
+  GlobalKey<FormState> loginFormKey = GlobalKey<FormState>(debugLabel: "login");
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class _SignInPageState extends State<SignInPage> {
                       height: 30,
                     ),
                     Form(
-                      key: authViewModel.loginFormKey,
+                      key: loginFormKey,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       child: Column(
                         children: [
@@ -156,7 +156,7 @@ class _SignInPageState extends State<SignInPage> {
                   height: height * 0.25,
                 ),
                 ReusableSignUpContainer(
-                  onTap: () => authViewModel.login(context),
+                  onTap: () => authViewModel.login(context, loginFormKey),
                   text: 'Se connecter',
                 ),
                 SizedBox(

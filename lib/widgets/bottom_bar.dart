@@ -27,20 +27,12 @@ class BottomBar extends StatelessWidget {
           label: "Commandes",
           icon: Icon(Icons.shopping_cart),
         ),
-        // BottomNavigationBarItem(
-        //   label: "Dashboard",
-        //   icon: Icon(Icons.shopping_cart),
-        // ),
-        // BottomNavigationBarItem(
-        //   label: "Wallet",
-        //   icon: Icon(Icons.wallet),
-        // ),
-        // BottomNavigationBarItem(
-        //   label: "Track",
-        //   icon: Icon(CupertinoIcons.person_3_fill),
-        // ),
         BottomNavigationBarItem(
-          label: "Aceuil",
+          label: "Produits",
+          icon: Icon(Icons.local_mall),
+        ),
+        BottomNavigationBarItem(
+          label: "Profile",
           icon: Icon(CupertinoIcons.profile_circled),
         ),
       ],

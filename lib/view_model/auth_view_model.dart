@@ -1,16 +1,22 @@
+import 'dart:convert';
+
+import 'package:ascolin/base/api_service.dart';
 import 'package:ascolin/base/constant.dart';
+import 'package:ascolin/model/token_model.dart';
 import 'package:ascolin/model/user_model.dart';
 import 'package:ascolin/pages/main_screen.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../widgets/error_dialog.dart';
 
 class AuthViewModel extends ChangeNotifier {
   late UserModel userData;
+  late TokenModel tokenData;
 
-  GlobalKey<FormState> signupFormKey = GlobalKey<FormState>();
-  GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
+  var api = ApiService();
+  final FlutterSecureStorage storage = const FlutterSecureStorage();
 
   // SignUp
   String firstName = '';
@@ -59,7 +65,8 @@ class AuthViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> signUp(BuildContext context) async {
+  Future<void> signUp(
+      BuildContext context, GlobalKey<FormState> signupFormKey) async {
     if ((signupFormKey.currentState?.validate() ?? false) == false) {
       print("Invalid Fields");
       return showDialog(
@@ -74,11 +81,9 @@ class AuthViewModel extends ChangeNotifier {
 
     try {
       // Replace this with your actual API endpoint
-      String apiUrl = '${Constant.baseUrl}/auth/signup';
+      String apiUrl = '/auth/signup';
 
       print(apiUrl);
-
-      final Dio dio = Dio();
 
       final Map<String, dynamic> data = {
         'email': emailAddress,
@@ -91,7 +96,7 @@ class AuthViewModel extends ChangeNotifier {
         'status': 'actif',
       };
 
-      final Response response = await dio.post(
+      final Response response = await api.dio.post(
         apiUrl,
         data: data,
       );
@@ -100,7 +105,16 @@ class AuthViewModel extends ChangeNotifier {
         // Handle successful response here
         print('SignUp Successful');
         print('${response.data}');
-        Constant.navigatePush(context, MainScreen());
+
+        userData = UserModel.fromJson(response.data['user']);
+        userData.password = password;
+        tokenData = TokenModel.fromJson(response.data);
+
+        await storage.write(key: 'user', value: jsonEncode(userData.toJson()));
+        await storage.write(
+            key: 'token', value: jsonEncode(tokenData.toJson()));
+
+        Constant.navigatePushReplacement(context, MainScreen());
       } else {
         // Handle other status codes or errors here
         print('SignUp Failed: ${response.statusCode}');
@@ -112,14 +126,17 @@ class AuthViewModel extends ChangeNotifier {
         context: context,
         builder: (context) {
           return ErrorDialog(
-            text: "${error.response!.data['message']}",
+            title: "Erreur",
+            text:
+                "${error.response?.data['message'] ?? "Une erreur est survenue"}",
           );
         },
       );
     }
   }
 
-  Future<void> login(BuildContext context) async {
+  Future<void> login(
+      BuildContext context, GlobalKey<FormState> loginFormKey) async {
     if ((loginFormKey.currentState?.validate() ?? false) == false) {
       print("Invalid Fields");
       return showDialog(
@@ -134,17 +151,15 @@ class AuthViewModel extends ChangeNotifier {
 
     try {
       // Replace this with your actual API endpoint for login
-      final String loginUrl = '${Constant.baseUrl}/auth/login';
+      final String loginUrl = '/auth/login';
       print(loginUrl);
-
-      final Dio dio = Dio();
 
       final Map<String, dynamic> loginData = {
         'email': lEmail,
         'password': lPassword,
       };
 
-      final Response response = await dio.post(
+      final Response response = await api.dio.post(
         loginUrl,
         data: loginData,
       );
@@ -155,7 +170,14 @@ class AuthViewModel extends ChangeNotifier {
         print('${response.data}');
 
         userData = UserModel.fromJson(response.data['user']);
-        Constant.navigatePush(context, MainScreen());
+        userData.password = lPassword;
+        tokenData = TokenModel.fromJson(response.data);
+
+        await storage.write(key: 'user', value: jsonEncode(userData.toJson()));
+        await storage.write(
+            key: 'token', value: jsonEncode(tokenData.toJson()));
+
+        Constant.navigatePushReplacement(context, MainScreen());
       } else {
         // Handle other status codes or errors here
         print('Login Failed: ${response.statusCode}');

@@ -3,8 +3,8 @@ import 'package:ascolin/utils/reusable_signup_container.dart';
 import 'package:ascolin/view_model/auth_view_model.dart';
 import 'package:ascolin/widgets/email_text_field.dart';
 import 'package:ascolin/widgets/name_text_field.dart';
-import 'package:ascolin/widgets/phone_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/password_field.dart';
@@ -25,6 +25,9 @@ class _SignUpPageState extends State<SignUpPage> {
 
   bool _isChecked = false;
   bool _visibilitySecure = false;
+
+  GlobalKey<FormState> signupFormKey =
+      GlobalKey<FormState>(debugLabel: "signup");
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +66,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   height: 30,
                 ),
                 Form(
-                  key: authViewModel.signupFormKey,
+                  key: signupFormKey,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: Column(
                     children: [
@@ -81,10 +84,25 @@ class _SignUpPageState extends State<SignUpPage> {
                         onChanged: (value) => authViewModel.setLastName(value),
                       ),
                       const SizedBox(height: 10),
-                      PhoneTextField(
+/*                      PhoneTextField(
                         controller: phoneController,
                         onChanged: (value) =>
                             authViewModel.setPhoneNumber(value),
+                      ),*/
+                      IntlPhoneField(
+                        controller: phoneController,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(),
+                          ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey),
+                          ),
+                        ),
+                        initialCountryCode: 'BJ',
+                        onChanged: (phone) {
+                          authViewModel.setPhoneNumber(phone.completeNumber);
+                        },
                       ),
                       const SizedBox(height: 10),
                       EmailTextField(
@@ -180,10 +198,11 @@ class _SignUpPageState extends State<SignUpPage> {
                     Center(
                       child: GestureDetector(
                         onTap: () {
-                          authViewModel.signUp(context);
+                          authViewModel.signUp(context, signupFormKey);
                         },
                         child: ReusableSignUpContainer(
-                          onTap: () => authViewModel.signUp(context),
+                          onTap: () =>
+                              authViewModel.signUp(context, signupFormKey),
                           text: "S'inscrire",
                         ),
                       ),

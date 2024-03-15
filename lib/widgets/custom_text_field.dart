@@ -6,8 +6,8 @@ class CustomTextField extends StatefulWidget {
   final double height;
   final String hintText;
   final TextEditingController controller;
-  final int minLines;
-  final int maxLines;
+  final int? minLines;
+  final int? maxLines;
   final bool obscureText;
   final bool enabled;
   final List<TextInputFormatter>? textInputFormatters;
@@ -20,30 +20,34 @@ class CustomTextField extends StatefulWidget {
   final bool enableErrorMessage;
   final bool? streamText;
   final Widget? suffixIcon;
+  final Widget? prefixIcon;
+  final int? maxLength;
 
-  const CustomTextField({
-    Key? key,
-    this.width,
-    this.height = 55,
-    required this.hintText,
-    required this.controller,
-    this.minLines = 1,
-    this.maxLines = 1,
-    this.obscureText = false,
-    this.enabled = true,
-    required this.validateFunction,
-    this.onSaved,
-    this.onChange,
-    this.textInputType,
-    this.textInputAction,
-    this.focusNode,
-    this.nextFocusNode,
-    this.submitAction,
-    this.enableErrorMessage = true,
-    this.streamText,
-    this.suffixIcon,
-    this.textInputFormatters,
-  }) : super(key: key);
+  const CustomTextField(
+      {Key? key,
+      this.width,
+      this.height = 55,
+      required this.hintText,
+      required this.controller,
+      this.minLines = 1,
+      this.maxLines = 1,
+      this.obscureText = false,
+      this.enabled = true,
+      required this.validateFunction,
+      this.onSaved,
+      this.onChange,
+      this.textInputType,
+      this.textInputAction,
+      this.focusNode,
+      this.nextFocusNode,
+      this.submitAction,
+      this.enableErrorMessage = true,
+      this.streamText,
+      this.suffixIcon,
+      this.prefixIcon,
+      this.textInputFormatters,
+      this.maxLength})
+      : super(key: key);
 
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();
@@ -57,7 +61,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          height: widget.maxLines != 1 ? 35 : widget.height,
+          //height: widget.height,
           width: widget.width ?? MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
             border: Border.all(
@@ -89,6 +93,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       ),
                       key: widget.key,
                       maxLines: widget.maxLines,
+                      minLines: widget.minLines,
                       controller: widget.controller,
                       obscureText: widget.obscureText,
                       keyboardType: widget.textInputType,
@@ -110,7 +115,16 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       //   }
                       // },
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.only(
+                          top: widget.height / 4,
+                          bottom: widget.height / 4,
+                        ),
+                        isCollapsed: true,
+                        isDense: true,
                         suffixIcon: widget.suffixIcon,
+                        prefixIcon: widget.prefixIcon,
+                        prefixIconConstraints:
+                            BoxConstraints(maxHeight: widget.height / 2),
                         // prefixIcon: Icon(
                         //   widget.prefix,
                         //   size: 15.0,
@@ -138,8 +152,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                           borderSide: BorderSide(color: Colors.transparent),
                         ),
                         border: const UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
-                        ),
+                            borderSide: BorderSide.none),
                         enabledBorder: const UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.transparent),
                         ),

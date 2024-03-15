@@ -12,11 +12,12 @@ class OrderModel {
   String? description;
   UnitModel? unit;
   String? pays;
-  int? quantity;
+  num? quantity;
   String? ville;
   String? status;
   String? specialNote;
-
+  String? paymentStatus;
+  List<dynamic>? images;
   OrderModel(
       {this.sId,
       this.trackingId,
@@ -30,7 +31,9 @@ class OrderModel {
       this.quantity,
       this.ville,
       this.status,
-      this.specialNote});
+      this.specialNote,
+      this.paymentStatus,
+      this.images});
 
   OrderModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -52,7 +55,9 @@ class OrderModel {
     quantity = json['quantity'];
     ville = json['ville'];
     status = json['status'];
+    paymentStatus = json['paymentStatus'];
     specialNote = json['specialNote'];
+    images = json['images'];
   }
 
   Map<String, dynamic> toJson() {
@@ -79,7 +84,9 @@ class OrderModel {
     data['quantity'] = this.quantity;
     data['ville'] = this.ville;
     data['status'] = this.status;
+    data['paymentStatus'] = this.paymentStatus;
     data['specialNote'] = this.specialNote;
+    data['images'] = this.images;
     return data;
   }
 }

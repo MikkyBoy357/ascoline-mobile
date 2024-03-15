@@ -10,8 +10,11 @@ class DropDownTextField extends StatelessWidget {
   final bool obscureText;
   final String? prefixImage;
   final bool hasPrefixImage;
+
   final Function(Object?)? onChanged;
   final value;
+  final List<DropdownMenuItem<Object>>? customItems;
+
   final VoidCallback? onPressed;
 
   const DropDownTextField({
@@ -24,6 +27,7 @@ class DropDownTextField extends StatelessWidget {
     required this.onChanged,
     this.obscureText = false,
     this.value,
+    this.customItems,
     this.prefixImage,
     this.onPressed,
     required this.hasPrefixImage,
@@ -78,44 +82,47 @@ class DropDownTextField extends StatelessWidget {
                   underline: Container(
                     height: 10,
                   ),
-                  items: dropDownList.map((location) {
-                    // print(location.toString());
-                    return DropdownMenuItem(
-                      value: location,
-                      child: Row(
-                        children: [
-                          Builder(
-                            builder: (context) {
-                              if (hasPrefixImage) {
-                                String? prefixImage = "";
-                                print(prefixImage);
-                                return Container(
-                                  width: 50,
-                                  height: 30,
-                                  // color: Colors.white,
-                                  child: Image.network(prefixImage),
-                                );
-                              } else {
-                                return SizedBox();
-                              }
-                            },
-                          ),
-                          Visibility(
-                            visible: hasPrefixImage,
-                            child: SizedBox(width: 10),
-                          ),
-                          Expanded(
-                            child: Text(
-                              location.toString(),
-                              style: TextStyle(),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                  items: customItems != null
+                      ? customItems
+                      : dropDownList.map((location) {
+                          // print(location.toString());
+                          return DropdownMenuItem(
+                            value: location,
+                            child: Row(
+                              children: [
+                                Builder(
+                                  builder: (context) {
+                                    if (hasPrefixImage) {
+                                      String? prefixImage = "";
+                                      print(prefixImage);
+                                      return Container(
+                                        width: 50,
+                                        height: 30,
+                                        // color: Colors.white,
+                                        child: Image.network(prefixImage),
+                                      );
+                                    } else {
+                                      return SizedBox();
+                                    }
+                                  },
+                                ),
+                                Visibility(
+                                  visible: hasPrefixImage,
+                                  child: SizedBox(width: 10),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    location.toString(),
+                                    style: TextStyle(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }).toList(),
+                          );
+                        }).toList(),
+                  menuMaxHeight: 200,
                 ),
               ),
             ),

@@ -1,5 +1,6 @@
 import 'package:ascolin/pages/home_page.dart';
 import 'package:ascolin/pages/order_list_screen.dart';
+import 'package:ascolin/pages/product_list_screen.dart';
 import 'package:ascolin/pages/profile_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -30,17 +31,16 @@ class _MainScreenState extends State<MainScreen> {
         onPageChanged: (index) {
           setState(() {
             _selectedItem = index;
-            print(_selectedItem);
           });
         },
+        controller: _pageController,
         children: [
           HomePage(),
           OrderListScreen(),
-          // Center(child: Text('Wallet')),
+          ProductListScreen(),
           // Center(child: Text('Track')),
           ProfileScreen(),
         ],
-        controller: _pageController,
       ),
       bottomNavigationBar: BottomBar(
         currentIndex: _selectedItem,

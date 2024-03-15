@@ -1,29 +1,24 @@
-import 'package:ascolin/model/order_model.dart';
-import 'package:ascolin/widgets/order_payment_dialog.dart';
+import 'package:ascolin/model/product_order_model.dart';
+import 'package:ascolin/widgets/product_payment_dialog.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/reusable_signup_container.dart';
 
-class OrderDetailScreen extends StatefulWidget {
-  final OrderModel order;
+class ProductOrderDetailScreen extends StatefulWidget {
+  final ProductOrderModel productOrder;
 
-  const OrderDetailScreen({
+  const ProductOrderDetailScreen({
     super.key,
-    required this.order,
+    required this.productOrder,
   });
 
   @override
-  State<OrderDetailScreen> createState() => _OrderDetailScreenState();
+  State<ProductOrderDetailScreen> createState() =>
+      _ProductOrderDetailScreenState();
 }
 
-class _OrderDetailScreenState extends State<OrderDetailScreen> {
-  List<String> statusEnums = [
-    "En attente",
-    "Réceptionée",
-    "En transit",
-    "Arrivée",
-    "Livrée"
-  ];
+class _ProductOrderDetailScreenState extends State<ProductOrderDetailScreen> {
+  List<String> statusEnums = ["Enregistrée", "Livrée"];
 
   int enumIndex = 0;
 
@@ -33,7 +28,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     // Find the index of "En transit" in the statusEnums list during initialization
     enumIndex = statusEnums.indexWhere((element) =>
         element.toLowerCase() ==
-        (widget.order.status?.toLowerCase() ?? "en transit"));
+        (widget.productOrder.status?.toLowerCase() ?? "enregistrée"));
     print("enumIndex => $enumIndex");
   }
 
@@ -55,7 +50,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Numéro de Tracking",
+              "Référence",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -63,7 +58,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             ),
             SizedBox(height: 10),
             Text(
-              "${widget.order.trackingId}",
+              "${widget.productOrder.reference}",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
@@ -84,7 +79,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                    color: "${widget.order.status}" == 'Réceptionné en Chine'
+                    color: "${widget.productOrder.status}" == 'Enregistrée'
                         ? Colors.green
                         : Colors.greenAccent,
                     borderRadius: BorderRadius.circular(16),
@@ -92,7 +87,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                   padding: EdgeInsets.all(8),
                   child: Center(
                     child: Text(
-                      "${widget.order.status}",
+                      "${widget.productOrder.status}",
                       style: TextStyle(
                         color: Colors.white, // Text color
                         fontSize: 14, // Adjust the font size as needed
@@ -117,7 +112,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 ),
                 Container(
                   decoration: BoxDecoration(
-                    color: widget.order.paymentStatus == 'paid'
+                    color: widget.productOrder.paymentStatus == 'paid'
                         ? Colors.green
                         : Colors.orange,
                     borderRadius: BorderRadius.circular(16),
@@ -125,7 +120,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                   padding: EdgeInsets.all(8),
                   child: Center(
                     child: Text(
-                      "${widget.order.paymentStatus == 'paid' ? "Payée" : "Non Payée"}",
+                      "${widget.productOrder.paymentStatus == 'paid' ? "Payée" : "Non Payée"}",
                       style: TextStyle(
                         color: Colors.white, // Text color
                         fontSize: 14, // Adjust the font size as needed
@@ -142,82 +137,31 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 enumIndex + 1,
                 (index) => StatusRow(
                   title: "${statusEnums[index]}",
-                  label: "July 7 2022 08:00am",
                 ),
               ),
             ),
-            // StatusRow(
-            //   title: "${order.status}",
-            //   label: "July 7 2022 08:00am",
-            // ),
-            // StatusRow(
-            //   title: "En cours d’acheminement",
-            //   label: "July 7 2022 08:00am",
-            // ),
-            // StatusRow(
-            //   title: "Receptionné",
-            //   label: "July 7 2022 08:00am",
-            // ),
-            // StatusRow(
-            //   title: "Livré au client",
-            //   label: "July 7 2022 08:00am",
-            // ),
             SizedBox(height: 20),
             Text(
-              "Information du colis",
+              "Information de la commande",
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: Color(0xFF04009A),
               ),
             ),
-            SizedBox(height: 10),
-            Text(
-              "Description",
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            Text(
-              "${widget.order.description}",
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[600],
-              ),
-            ),
-            SizedBox(height: 15),
-            Text(
-              "Type de transport",
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            Text(
-              "${widget.order.transportType?.label}",
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: Colors.grey[600],
-              ),
-            ),
             SizedBox(height: 25),
-            Text(
-              "Autre information",
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Type de colis",
+                  "Nom du produit",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.grey[600],
                   ),
                 ),
                 Text(
-                  "${widget.order.typeColis?.label}",
+                  "${widget.productOrder.product?.name}",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Color(0xFFEC8000),
@@ -225,89 +169,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Poids",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey[600],
-                  ),
-                ),
-                Text(
-                  "${widget.order.unit?.label}",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFFEC8000),
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Tracking Number",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey[600],
-                  ),
-                ),
-                Text(
-                  "${widget.order.trackingId}",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFFEC8000),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Visibility(
-              visible: (widget.order.images ?? []).isNotEmpty,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Images associées",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.30,
-                    width: double.infinity,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: widget.order.images?.length ?? 0,
-                        itemBuilder: (context, index) {
-                          return Image.network(
-                            widget.order.images?[index] ?? '',
-                            //height: 70,
-                            //width: 120,
-                            fit: BoxFit.cover,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            },
-                            errorBuilder: (context, error, stackTrace) =>
-                                const Center(
-                              child: Icon(Icons.image_not_supported_outlined),
-                            ),
-                          );
-                        }),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 25),
-            Divider(thickness: 2),
             SizedBox(height: 25),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -320,7 +181,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                   ),
                 ),
                 Text(
-                  "${widget.order.quantity}",
+                  "${widget.productOrder.quantity}",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Color(0xFFEC8000),
@@ -332,14 +193,14 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Prix/unité",
+                  "Prix",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.grey[600],
                   ),
                 ),
                 Text(
-                  "${widget.order.pricing?.price} F CFA/${widget.order.unit?.label}",
+                  "${widget.productOrder.price} F CFA",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Color(0xFFEC8000),
@@ -359,7 +220,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                   ),
                 ),
                 Text(
-                  "${widget.order.pricing!.price! * widget.order.quantity!} F CFA",
+                  "${(widget.productOrder.price ?? 0) * (widget.productOrder.quantity ?? 0)} F CFA",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Color(0xFFEC8000),
@@ -369,8 +230,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             ),
             SizedBox(height: 50),
             Visibility(
-              visible: (widget.order.paymentStatus == "unpaid" &&
-                  widget.order.status == "Réceptionée"),
+              visible: (widget.productOrder.paymentStatus == "unpaid" &&
+                  widget.productOrder.status == "Enregistrée"),
               child: ReusableSignUpContainer(
                 onTap: () {
                   showModalBottomSheet<void>(
@@ -381,13 +242,12 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                     builder: (BuildContext context) {
                       return Padding(
                         padding: MediaQuery.of(context).viewInsets,
-                        child: OrderPaymentDialog(
-                          order: widget.order,
+                        child: ProductPaymentDialog(
+                          productOrder: widget.productOrder,
                         ),
                       );
                     },
                   );
-                  // Constant.navigatePush(context, SendAPackagePage());
                 },
                 text: 'Payer la facture',
                 margin: EdgeInsets.only(bottom: 30),
@@ -403,12 +263,10 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
 class StatusRow extends StatelessWidget {
   final String title;
-  final String label;
 
   const StatusRow({
     super.key,
     required this.title,
-    required this.label,
   });
 
   @override
@@ -451,13 +309,6 @@ class StatusRow extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              // Text(
-              //   label,
-              //   style: TextStyle(
-              //     fontWeight: FontWeight.w600,
-              //     color: Color(0xFFEC8000),
-              //   ),
-              // ),
             ],
           )
         ],

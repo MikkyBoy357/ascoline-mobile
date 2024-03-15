@@ -44,7 +44,7 @@ class _SendAPackagePageState extends State<SendAPackagePage> {
             toolbarHeight: height * 0.1,
             backgroundColor: Colors.white,
             title: Text(
-              'Send a package',
+              'Faire une commande',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey.shade400,
@@ -65,14 +65,15 @@ class _SendAPackagePageState extends State<SendAPackagePage> {
                   ),
                   Row(
                     children: [
-                      SizedBox(
-                        width: 20,
-                      ),
                       Icon(Icons.call_split_outlined),
+                      SizedBox(
+                        width: 5,
+                      ),
                       Text(
-                        'Origin Details',
+                        'Détails du vendeur',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
+                          fontSize: 18,
                         ),
                       ),
                     ],
@@ -80,127 +81,201 @@ class _SendAPackagePageState extends State<SendAPackagePage> {
                   SizedBox(
                     height: 10,
                   ),
-                  NameTextField(
-                    title: 'Description',
-                    controller: descriptionController,
-                    onChanged: (val) => orderProvider.setDescription(val),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      children: [
+                        NameTextField(
+                          title: 'Description',
+                          controller: descriptionController,
+                          onChanged: (val) => orderProvider.setDescription(val),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        NumberTextField(
+                          title: 'Tracking',
+                          controller: trackingController,
+                          onChanged: (val) => orderProvider.setTracking(val),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        DropDownTextField(
+                          title: 'Unite(kg)',
+                          value: orderProvider.unite,
+                          customItems: orderProvider.measureUnits.map((data) {
+                            return DropdownMenuItem(
+                              value: data,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      data.label.toString(),
+                                      style: TextStyle(),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                          dropDownList: orderProvider.measureUnits,
+                          hintText: 'Unite',
+                          controller: uniteController,
+                          onChanged: (dynamic val) {
+                            orderProvider.setUnite(val);
+                          },
+                          hasPrefixImage: false,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        NumberTextField(
+                          title: 'Quantite',
+                          controller: quantiteController,
+                          onChanged: (val) => orderProvider.setQuantite(val),
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(
-                    height: 10,
-                  ),
-                  NumberTextField(
-                    title: 'Tracking',
-                    controller: trackingController,
-                    onChanged: (val) => orderProvider.setTracking(val),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  DropDownTextField(
-                    title: 'Unite(kg)',
-                    value: orderProvider.unite,
-                    dropDownList: orderProvider.measureUnits
-                        .map((unit) => unit.label)
-                        .toList(),
-                    hintText: 'Unite',
-                    controller: uniteController,
-                    onChanged: (val) => orderProvider.setUnite(val.toString()),
-                    hasPrefixImage: false,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  NumberTextField(
-                    title: 'Quantite',
-                    controller: quantiteController,
-                    onChanged: (val) => orderProvider.setQuantite(val),
-                  ),
-                  SizedBox(
-                    height: 10,
+                    height: 25,
                   ),
                   Row(
                     children: [
-                      SizedBox(
-                        width: 10,
-                      ),
                       Icon(Icons.location_on_sharp),
+                      SizedBox(
+                        width: 5,
+                      ),
                       Text(
-                        'Destination Details',
+                        'Détails de destination',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
+                          fontSize: 18,
                         ),
                       )
                     ],
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  DropDownTextField(
-                    title: 'Pays',
-                    value: orderProvider.pays,
-                    dropDownList: orderProvider.countries
-                        .map((country) => country.label)
-                        .toList(),
-                    hintText: 'Pays',
-                    controller: paysController,
-                    onChanged: (val) => orderProvider.setPays(val.toString()),
-                    hasPrefixImage: false,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  NameTextField(
-                    title: 'Ville',
-                    controller: villeController,
-                    onChanged: (val) => orderProvider.setVille(val),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 20),
-                    child: Text(
-                      'Package Details',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        DropDownTextField(
+                          title: 'Pays',
+                          value: orderProvider.pays,
+                          dropDownList: orderProvider.countries
+                              .map((country) => country.label)
+                              .toList(),
+                          hintText: 'Pays',
+                          controller: paysController,
+                          onChanged: (val) =>
+                              orderProvider.setPays(val.toString()),
+                          hasPrefixImage: false,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        NameTextField(
+                          title: 'Ville',
+                          controller: villeController,
+                          onChanged: (val) => orderProvider.setVille(val),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 10),
-                  DropDownTextField(
-                    title: 'Type de transport',
-                    value: orderProvider.typeTransport,
-                    dropDownList: orderProvider.transportTypes
-                        .map((transport) => transport.label)
-                        .toList(),
-                    hintText: 'Transport',
-                    controller: transportTypeController,
-                    onChanged: (val) =>
-                        orderProvider.setTypeTransport(val.toString()),
-                    hasPrefixImage: false,
-                  ),
-                  SizedBox(height: 10),
-                  DropDownTextField(
-                    title: 'Type de colis',
-                    value: orderProvider.typeColis,
-                    dropDownList: orderProvider.packageTypes
-                        .map((package) => package.label)
-                        .toList(),
-                    hintText: 'Colis',
-                    controller: typeColisController,
-                    onChanged: (val) =>
-                        orderProvider.setTypeColis(val.toString()),
-                    hasPrefixImage: false,
-                  ),
-                  SizedBox(height: 10),
-                  NameTextField(
-                    title: 'Note spéciale',
-                    controller: specialNoteController,
-                    onChanged: (val) => orderProvider.setSpecialNote(val),
-                  ),
                   SizedBox(
-                    height: 15,
+                    height: 25,
                   ),
+                  Row(
+                    children: [
+                      Icon(Icons.info),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        'Détails du colis',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      )
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 10),
+                        DropDownTextField(
+                          title: 'Type de transport',
+                          value: orderProvider.typeTransport,
+                          dropDownList: orderProvider.transportTypes,
+                          customItems: orderProvider.transportTypes.map((data) {
+                            return DropdownMenuItem(
+                              value: data,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      data.label.toString(),
+                                      style: TextStyle(),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                          hintText: 'Transport',
+                          controller: transportTypeController,
+                          onChanged: (dynamic val) =>
+                              orderProvider.setTypeTransport(val),
+                          hasPrefixImage: false,
+                        ),
+                        SizedBox(height: 10),
+                        DropDownTextField(
+                          title: 'Type de colis',
+                          value: orderProvider.typeColis,
+                          dropDownList: orderProvider.packageTypes,
+                          customItems: orderProvider.packageTypes.map((data) {
+                            return DropdownMenuItem(
+                              value: data,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      data.label.toString(),
+                                      style: TextStyle(),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                          hintText: 'Colis',
+                          controller: typeColisController,
+                          onChanged: (dynamic val) =>
+                              orderProvider.setTypeColis(val),
+                          hasPrefixImage: false,
+                        ),
+                        SizedBox(height: 10),
+                        NameTextField(
+                          title: 'Note spéciale',
+                          controller: specialNoteController,
+                          onChanged: (val) => orderProvider.setSpecialNote(val),
+                        ),
+                      ],
+                    ),
+                  ),
+
                   // Container(
                   //   margin: EdgeInsets.only(left: 20),
                   //   child: Text(
@@ -242,14 +317,14 @@ class _SendAPackagePageState extends State<SendAPackagePage> {
                   //   ],
                   // ),
                   SizedBox(
-                    height: 20,
+                    height: 30,
                   ),
                   Center(
                     child: ReusableSignUpContainer(
                       onTap: () {
                         orderProvider.createOrder(context);
                       },
-                      text: 'Create Order',
+                      text: 'Crée commande',
                       margin: EdgeInsets.only(bottom: 20),
                       backgroundColor: Color(0xFF0560FA),
                     ),

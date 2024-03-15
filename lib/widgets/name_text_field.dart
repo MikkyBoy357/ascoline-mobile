@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../base/validation.dart';
@@ -7,13 +8,13 @@ class NameTextField extends StatelessWidget {
   const NameTextField({
     Key? key,
     required this.controller,
-    this.title = 'Name',
-    this.hintText = 'enter a text',
+    this.title,
+    this.hintText = 'Entrez un texte',
     this.onChanged,
   }) : super(key: key);
 
   final TextEditingController controller;
-  final String title;
+  final String? title;
   final String hintText;
   final void Function(String)? onChanged;
 
@@ -22,14 +23,17 @@ class NameTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            color: Color(0xffA7A7A7),
-            fontWeight: FontWeight.bold,
+        Visibility(
+          visible: title != null,
+          child: Text(
+            title ?? "",
+            style: TextStyle(
+              color: Color(0xffA7A7A7),
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-        SizedBox(height: 10),
+        Visibility(visible: title != null, child: SizedBox(height: 10)),
         CustomTextField(
           hintText: hintText,
           controller: controller,

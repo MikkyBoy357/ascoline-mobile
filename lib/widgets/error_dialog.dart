@@ -7,7 +7,7 @@ class ErrorDialog extends StatelessWidget {
 
   const ErrorDialog({
     Key? key,
-    this.title = 'Error',
+    this.title = 'Erreur',
     this.text = "Invalid request",
     this.buttonLabel = "OK",
   }) : super(key: key);
@@ -34,7 +34,7 @@ class SuccessDialog extends StatelessWidget {
 
   const SuccessDialog({
     Key? key,
-    this.title = "Success",
+    this.title = "Succès",
     this.text = "Request was successful",
   }) : super(key: key);
   @override

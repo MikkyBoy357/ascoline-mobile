@@ -1,6 +1,7 @@
+import 'package:ascolin/base/token.dart';
 import 'package:ascolin/pages/sign_in_page.dart';
+import 'package:ascolin/pages/transaction_list_screen.dart';
 import 'package:ascolin/view_model/auth_view_model.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,7 +15,6 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(CupertinoIcons.back),
         title: Text('Profile'),
       ),
       body: Consumer<AuthViewModel>(
@@ -140,18 +140,40 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return TransactionListScreen();
+                          },
+                        ),
+                      );
+                    },
+                    child: ProfileOptionCard(
+                      icon: Icon(
+                        Icons.money,
+                        size: 30,
+                        color: Colors.indigo,
+                      ),
+                      title: "Mes transactions",
+                      subtitle: "Voir toutes vos transactions",
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return WillPopScope(
-                              onWillPop: () async => false,
+                            return PopScope(
+                              canPop: false,
                               child: SignInPage(),
                             );
                           },
                         ),
                       );
+                      await storage.deleteAll();
                     },
                     child: ProfileOptionCard(
                       icon: Icon(
@@ -159,9 +181,10 @@ class ProfileScreen extends StatelessWidget {
                         size: 30,
                         color: Colors.red,
                       ),
-                      title: "Log Out",
+                      title: "Déconnexion",
                     ),
                   ),
+
                   SizedBox(height: 20),
                 ],
               ),
@@ -220,7 +243,7 @@ class ProfileOptionCard extends StatelessWidget {
                         child: Text(
                           "${subtitle}",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 14,
                             color: Colors.grey[500]!,
                             fontWeight: FontWeight.w400,
                           ),
