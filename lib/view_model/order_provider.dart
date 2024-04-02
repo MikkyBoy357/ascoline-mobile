@@ -226,7 +226,7 @@ class OrderProvider extends ChangeNotifier {
         'pays': pays,
         'quantity': quantite,
         'ville': ville,
-        'status': 'En attente de confirmation',
+        'status': 'En attente',
         'specialNote': specialNote,
         // Add more fields here as needed
       };
