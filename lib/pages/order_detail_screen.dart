@@ -19,7 +19,7 @@ class OrderDetailScreen extends StatefulWidget {
 class _OrderDetailScreenState extends State<OrderDetailScreen> {
   List<String> statusEnums = [
     "En attente",
-    "Réceptionée",
+    "Réceptionnée",
     "En transit",
     "Arrivée",
     "Livrée"
@@ -370,7 +370,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             SizedBox(height: 50),
             Visibility(
               visible: (widget.order.paymentStatus == "unpaid" &&
-                  widget.order.status == "Réceptionée"),
+                  widget.order.status == "Réceptionnée"),
               child: ReusableSignUpContainer(
                 onTap: () {
                   showModalBottomSheet<void>(
